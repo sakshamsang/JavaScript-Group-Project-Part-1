@@ -14,7 +14,6 @@ h1 {
 }
 label {
     float: left;
-    width: 8em;
 }
 input, select { 
     width: 10em;

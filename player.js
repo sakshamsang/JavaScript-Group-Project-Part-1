@@ -11,6 +11,7 @@ class Player {
         this.imageOrder = [];
         this.firstImageId = null;
         this.firstImagePath = null;
+        this.correctScore = 0;
 
     }
 
@@ -27,22 +28,19 @@ class Player {
         // show these 24 images by the random order from imageOrder variable
         this.imageOrder = [];
         this.randomOrder();
-        console.log(this.imageOrder);
         let htmlString = "";
         let rowString = "<div class='row'>";
         for (let x = 0; x < this.imageOrder.length; x++) {
             const val = this.imageOrder[x] - 1;
             let path = "";
-            if (val > 23) {
-                path = ImageArrayList[val - 24];
+            if (val > ((this.noOfCards / 2) - 1)) {
+                path = ImageArrayList[val - this.noOfCards / 2];
             } else {
                 path = ImageArrayList[val]
             }
-            console.log(path);
             const element = `<a id="id_${this.imageOrder[x]}" href="#" class="card-element"> 
                 <img src="images/back.png" class="card-img show" />
                 </a>`;
-            // <img src="${path}" class="card-img hidden" />
 
             rowString += element;
             if ((x > 0 && (x + 1) % 8 == 0) || x == this.imageOrder.length - 1) {
@@ -59,6 +57,13 @@ class Player {
             const id = elements[i].id.substring(3);
             elements[i].addEventListener("click", () => this.handleClick(id));
         }
+
+        const label = `name_${this.noOfCards}_${this.name}`;
+        const value = localStorage.getItem(label);
+        if(value){
+            $("#previous_score").text(value);
+        }
+
     }
 
     randomOrder() {
@@ -90,18 +95,13 @@ class Player {
         if (event == this.firstImageId) {
             return;
         }
-        // const val = this.imageOrder[event] - 1;
-
-        // let path = `images/card_${event}.png`;
-        const val = this.imageOrder[event] - 1;
-        console.log(val)
-            let path = "";
-            if (val > 23) {
-                path = ImageArrayList[val - 24];
-            } else {
-                path = ImageArrayList[val]
-            }
-            console.log(path);
+        const val = this.imageOrder[event - 1] - 1;
+        let path = "";
+        if (val > ((this.noOfCards / 2) - 1)) {
+            path = ImageArrayList[val - this.noOfCards / 2];
+        } else {
+            path = ImageArrayList[val]
+        }
         const element = document.getElementById('id_' + event);
         const image = element.getElementsByTagName('img');
         image[0].src = path;
@@ -115,8 +115,15 @@ class Player {
                 [this.firstImageId, event].forEach(row => {
                     const element = document.getElementById('id_' + row);
                     const image = element.getElementsByTagName('img');
-                    image[0].style.display = "none";
+                    image[0].style.visibility = "hidden";
                 })
+                this.firstImageId = null;
+                this.firstImagePath = null;
+                this.clickCounter = 0;
+                this.correctScore++;
+                if (this.correctScore == this.noOfCards / 2) {
+                    this.saveHighestScore();
+                }
             } else {
                 setTimeout(() => {
                     [this.firstImageId, event].forEach(row => {
@@ -127,14 +134,22 @@ class Player {
                     this.firstImageId = null;
                     this.firstImagePath = null;
                     this.clickCounter = 0;
-                }, 2000);
+                }, 1000);
             }
         }
-        $("#high_score").text(this.totalScore);
+        $("#click_score").text(this.totalScore);
+        $("#correct_Score").text(`${this.correctScore} / ${this.noOfCards / 2}`);
     }
 
     saveHighestScore() {
         // method to save highscore of player name with no of cards into localstorage
+        const label = `name_${this.noOfCards}_${this.name}`;
+        const value = localStorage.getItem(label);
+        if (value && parseInt(value) < this.totalScore) {
+            localStorage.setItem(label, this.totalScore);
+        } else {
+            localStorage.setItem(label, this.totalScore);
+        }
     }
 
 }
