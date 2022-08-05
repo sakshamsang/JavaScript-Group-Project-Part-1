@@ -26,18 +26,20 @@
                 <li><a href="#tabs-3">Settings</a></li>
             </ul>
             <div id="tabs-1">
-                <div>
-                    <label>Player Name:</label>
-                    <span id="player_name3"></span>
-                </div>
-                <div>
-                    <label>High score:</label>
-                    <span id="high_score"></span>
-                </div>
-                <br>
-                <div>
-                    <label>Correct:</label>
-                    <span id="correct"></span>
+                <div class="flex">
+                    <div>
+                        <label>Player Name:</label>
+                        <span id="player_name3"></span>
+                    </div>
+                    <div>
+                        <label>High score:</label>
+                        <span id="high_score"></span>
+                    </div>
+                    <br>
+                    <div>
+                        <label>Correct:</label>
+                        <span id="correct"></span>
+                    </div>
                 </div>
                 <br>
                 <div id="cards"></div>
@@ -61,13 +63,13 @@
 
                 <label for='num_cards'>Number of cards:</label>
                 <select id='num_cards'>
-                    <option>48</option>
+                    <option selected>48</option>
                     <option>40</option>
                     <option>32</option>
                     <option>24</option>
                     <option>16</option>
                     <option>8</option>
-                
+
                 </select><br>
                 <button type="button" id='save_settings' value='Save Settings'>Save Settings</button>
 
@@ -76,6 +78,8 @@
     </main>
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <script src="constant.js"></script>
+    <script src="player.js"></script>
     <script src="main.js"></script>
     <script>
         $(function () {
