@@ -60,7 +60,7 @@ class Player {
 
         const label = `name_${this.noOfCards}_${this.name}`;
         const value = localStorage.getItem(label);
-        if(value){
+        if (value) {
             $("#previous_score").text(value);
         }
 
@@ -102,9 +102,11 @@ class Player {
         } else {
             path = ImageArrayList[val]
         }
-        const element = document.getElementById('id_' + event);
-        const image = element.getElementsByTagName('img');
-        image[0].src = path;
+
+        $('#id_' + event).find('img').fadeOut(200, function () {
+            $(this).attr('src', path).fadeIn(200);
+        });
+
         this.totalScore++;
         if (this.clickCounter == 0) {
             this.clickCounter++;
@@ -112,24 +114,28 @@ class Player {
             this.firstImagePath = path;
         } else {
             if (this.firstImagePath == path) {
-                [this.firstImageId, event].forEach(row => {
-                    const element = document.getElementById('id_' + row);
-                    const image = element.getElementsByTagName('img');
-                    image[0].style.visibility = "hidden";
-                })
-                this.firstImageId = null;
-                this.firstImagePath = null;
-                this.clickCounter = 0;
-                this.correctScore++;
-                if (this.correctScore == this.noOfCards / 2) {
-                    this.saveHighestScore();
-                }
+                setTimeout(() => {
+                    [this.firstImageId, event].forEach(row => {
+                        $('#id_' + row).find('img').fadeOut(200, function () {
+                            $(this).attr('src', "images/blank.png").fadeIn(200);
+                        });
+                    })
+                    this.firstImageId = null;
+                    this.firstImagePath = null;
+                    this.clickCounter = 0;
+                    this.correctScore++;
+                    if (this.correctScore == this.noOfCards / 2) {
+                        $("#cards").hide();
+                        $("#result").text("Hurry! You finished in " + this.totalScore + " moves");
+                        this.saveHighestScore();
+                    }
+                }, 1000);
             } else {
                 setTimeout(() => {
                     [this.firstImageId, event].forEach(row => {
-                        const element = document.getElementById('id_' + row);
-                        const image = element.getElementsByTagName('img');
-                        image[0].src = "images/back.png";
+                        $('#id_' + row).find('img').fadeOut(200, function () {
+                            $(this).attr('src', "images/back.png").fadeIn(200);
+                        });
                     })
                     this.firstImageId = null;
                     this.firstImagePath = null;
