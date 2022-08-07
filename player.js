@@ -126,7 +126,7 @@ class Player {
                     this.correctScore++;
                     if (this.correctScore == this.noOfCards / 2) {
                         $("#cards").hide();
-                        $("#result").text("Hurry! You finished in " + this.totalScore + " moves");
+                        $("#result").text("Hurray! You finished in " + this.totalScore + " moves");
                         this.saveHighestScore();
                     }
                 }, 1000);
